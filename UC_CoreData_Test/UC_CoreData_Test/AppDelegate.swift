@@ -20,12 +20,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let trigs = Triggers()
         
         let tabController = window!.rootViewController as! UITabBarController
-        let navCntr = tabController.childViewControllers[1] as! UINavigationController
+        /*let navCntr = tabController.childViewControllers[1] as! UINavigationController
         let tableCntrl = navCntr.topViewController as! TriggerTableViewController
-        tableCntrl.triggers = trigs
+        tableCntrl.triggers = trigs*/
         
-        let main = tabController.childViewControllers[0] as! MainDataViewController
-        main.triggers = trigs
+        /*let main = tabController.childViewControllers[0] as! MainDataViewController
+        main.triggers = trigs*/
         
         return true
     }

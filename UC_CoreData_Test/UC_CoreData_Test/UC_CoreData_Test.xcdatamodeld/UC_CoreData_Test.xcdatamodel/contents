@@ -21,9 +21,13 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sex" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
     </entity>
+    <entity name="Trigger" representedClassName="Trigger" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <elements>
         <element name="Entry" positionX="-54" positionY="-9" width="128" height="180"/>
         <element name="Medication" positionX="-36" positionY="9" width="128" height="90"/>
         <element name="Patient" positionX="-63" positionY="-18" width="128" height="90"/>
+        <element name="Trigger" positionX="-45" positionY="54" width="128" height="60"/>
     </elements>
 </model>

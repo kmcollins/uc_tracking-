@@ -19,7 +19,7 @@ class MainDataViewController: UIViewController {
     @IBOutlet var stoolConstistency: UISegmentedControl!
     @IBOutlet var abdPain: UISegmentedControl!
     
-    var triggers: Triggers!
+    //var triggers: Triggers!
     
     let triggerNames: [String] = ["Milk", "Math Test", "Gluten", "Track Race", "Pizza", "Coffee"]
     
@@ -36,7 +36,7 @@ class MainDataViewController: UIViewController {
             todaysTriggersCntrl.nocturnal = nocturnal.selectedSegmentIndex
             todaysTriggersCntrl.activityLevel = activityLevel.selectedSegmentIndex
             todaysTriggersCntrl.rectBleeding = rectBleeding.selectedSegmentIndex
-            todaysTriggersCntrl.triggers = triggers
+            //todaysTriggersCntrl.triggers = triggers
         }
     }
     

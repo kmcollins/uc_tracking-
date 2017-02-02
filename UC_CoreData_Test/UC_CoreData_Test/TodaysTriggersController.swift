@@ -10,7 +10,9 @@ import Foundation
 import UIKit
 
 class TodaysTriggersController: UITableViewController {
-    var triggers: Triggers!
+    //var triggers: Triggers!
+    
+    var triggers: [Trigger] = [] 
     
     var activityLevel: Int!
     var numStools: Int!
@@ -27,16 +29,45 @@ class TodaysTriggersController: UITableViewController {
     }
     
     @IBAction func addNewTrigger(_ sender: AnyObject) {
-        // Create a new item and add it to the store
-        let newTrigger = ""
-        triggers.createTrigger(withName: newTrigger)
+        let alert = UIAlertController(title: "New Trigger", message: "Add a trigger.", preferredStyle: .alert)
         
-        // Figure out where that item is in the array
-        if let index = triggers.triggerNames.index(of: newTrigger) {
-            let indexPath = IndexPath(row: index, section: 0)
-            // Insert this new row into the table
-            tableView.insertRows(at: [indexPath], with: .automatic)
+        let addNewAction = UIAlertAction(title: "Add", style: .default){(_) in
+            let nameTextField = alert.textFields![0]
+            self.createTrigger(withName: nameTextField.text!)
+            self.tableView.reloadData()
         }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alert.addTextField(configurationHandler: nil)
+        
+        alert.addAction(addNewAction)
+        alert.addAction(cancelAction)
+        
+        self.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func createTrigger(withName name: String) {
+        let appDelegate = (UIApplication.shared.delegate) as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        
+        let trig = Trigger(context: context)
+        
+        trig.name = name
+        
+        appDelegate.saveContext()
+        
+        do {
+            triggers = try context.fetch(Trigger.fetchRequest()) as! [Trigger]
+        }
+        catch {
+            print("ERROR")
+        }
+        
+        let indexPath = IndexPath(row: triggers.count - 1, section: 0)
+        // Insert this new row into the table
+        tableView.insertRows(at: [indexPath], with: .automatic)
+        
     }
     
     func convertToScore() {
@@ -105,6 +136,7 @@ class TodaysTriggersController: UITableViewController {
         }
         
         pucaiScore += stoolConsistency + rectBleeding + numStools + nocturnal + abdPain + activityLevel
+        
     }
     
     func createEntry() {
@@ -120,6 +152,7 @@ class TodaysTriggersController: UITableViewController {
         entry.nocturnal = Int16(nocturnal)
         entry.abdominalPain = Int16(abdPain)
         entry.rectalBleeding = Int16(rectBleeding)
+        convertToScore()
         entry.pucaiScore = Int16(pucaiScore)
         
         //let cell = tableView.dequeueReusableCell(withIdentifier: "triggerCell", for: indexPath) as! TriggerCell
@@ -169,7 +202,8 @@ class TodaysTriggersController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return triggers.triggerNames.count
+        //return triggers.triggerNames.count
+        return triggers.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -182,7 +216,8 @@ class TodaysTriggersController: UITableViewController {
         /* Set the text on the cell w/ the description of the item
          that is at the nth index of items, where n = row this cell
          will appear in on the tableView */
-        let trigName = triggers.triggerNames[indexPath.row]
+        //let trigName = triggers.triggerNames[indexPath.row]
+        let trigName = triggers[indexPath.row].name
         
         cell.nameLabel.text = trigName
         
@@ -206,6 +241,16 @@ class TodaysTriggersController: UITableViewController {
         
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 65
+        
+        let appDelegate = (UIApplication.shared.delegate) as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        
+        do {
+            self.triggers = try context.fetch(Trigger.fetchRequest()) as! [Trigger]
+        }
+        catch {
+            print("ERROR")
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
